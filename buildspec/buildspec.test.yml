@@ -34,9 +34,6 @@ phases:
       - npm install -g @angular/cli
       - npm install
 
-      # Set up all necessary/required env variables and Install CodeClimate reporter.
-
-
   pre_build:
     commands:
       # Run code quality tools.
