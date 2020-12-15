@@ -1,0 +1,9 @@
+<app-quote [quote]="quote$ | async"></app-quote>
+
+<button
+  class="get-quote-btn"
+  title="Get another Quote"
+  [@isClicked]="(isRefreshBtnClicked$ | async) ? 'isClicked' : ''"
+  (click)="getRandomQuote()"
+></button>
+
