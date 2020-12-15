@@ -3,9 +3,9 @@ version: 0.2
 env:
   variables:
     CACHE_CONTROL: 86400
-    BUILD_ENV: test
-    S3_BUCKET: quote-app-test
-    GIT_BRANCH: develop
+    BUILD_ENV: production
+    S3_BUCKET: cloud-quote-app
+    GIT_BRANCH: master
     CI_NAME: CodeBuild
     # CLOUDFRONT_ID: ""
     # CLOUDFRONT_APP_URL: ""
@@ -35,11 +35,7 @@ phases:
       - npm install
 
       # Set up all necessary/required env variables and Install CodeClimate reporter.
-      - export GIT_COMMIT_SHA="$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION)"
-      - export GIT_COMMITTED_AT="$(date +%s)"
-      - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-      - chmod +x ./cc-test-reporter
-      - ./cc-test-reporter before-build
+
 
   pre_build:
     commands:
@@ -58,7 +54,6 @@ phases:
     commands:
       # Upload test coverage report to CodeCov and CodeClimate.
       - curl -s https://codecov.io/bash | bash -s - -t ${CODECOV_TOKEN} -f ${CODECOV_COVERAGE_REPORT_PATH}
-      - ./cc-test-reporter after-build -t lcov -r ${CODE_CLIMATE_REPORTER_ID} --exit-code $?
 
       # Clear S3 bucket.
       - aws s3 rm s3://${S3_BUCKET} --recursive
